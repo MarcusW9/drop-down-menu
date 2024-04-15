@@ -1,25 +1,20 @@
-import _ from "lodash";
+// import _ from "lodash";
 import "./style.css";
 
-console.log("hello world");
+document.addEventListener("click", e => {
+  const isDropdownButton = e.target.matches('[data-dropdown-button]')
+  if (!isDropdownButton && e.target.closest('[data-dropdown-menu]') != null) return
 
-const name = "James";
+  // if clicking on a dropdown button find the closest parent and give it ".active"
+  let currentDropdown
+  if (isDropdownButton) {
+    currentDropdown = e.target.closest('[data-dropdown-menu]');
+    currentDropdown.classList.toggle('active')
+  }
 
-const person = { first: name };
-
-console.log(person);
-
-const sayHelloLinting = (fName) => {
-  console.log(`Hello linting, ${fName}`);
-};
-
-function component() {
-  const element = document.createElement("div");
-
-  // Lodash, currently included via a script, is required for this line to work
-  element.innerHTML = _.join(["Hello", "webpack"], " ");
-
-  return element;
-}
-
-document.body.appendChild(component());
+  // if this is the button clicked already don't close it and if it is not then close it 
+  document.querySelectorAll('[data-dropdown-menu].active').forEach(dropdown => {
+    if (dropdown === currentDropdown) return
+    dropdown.classList.remove('active')
+  })
+})
